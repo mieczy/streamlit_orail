@@ -19,7 +19,10 @@ def main():
     with FILE_AREA:
         FILE_AREA.subheader('Insert Test Image')
         image_file = FILE_AREA.file_uploader('Select input image',type=['png','jpeg', 'jpg'])
-        is_clicked = FILE_AREA.button('inference')
+
+        # button
+        is_clicked_inference = FILE_AREA.button('inference')
+        
         FILE_AREA.write('---')
 
     with RESULT_AREA:
@@ -31,17 +34,20 @@ def main():
         
     with IMAGE_AREA:
         IMAGE_AREA.subheader('Simailar Images')
-        image1, image2, image3, image4  = IMAGE_AREA.columns(4)
+        image1, image2, image3, image4 = IMAGE_AREA.columns(4)
 
-    if is_clicked and image_file is not None:
-        result, is_odd = model.detect(image_file)
-        type_col.write(result)
-        odd_col.write(is_odd)
-        odd_col.write('(*OOD score 1-5 and its like confident level)')
-        image1.image(image_file, width=200, caption='Input')
-        image2.image(image_file, width=200, caption='Similar 1')
-        image3.image(image_file, width=200, caption='Similar 2')
-        image4.image(image_file, width=200, caption='Similar 3')
+    if is_clicked_inference and image_file is not None:
+        try: 
+            result, is_odd = model.detect(image_file)
+            type_col.write(result)
+            odd_col.write(is_odd)
+            odd_col.write('(*OOD score 1-5 and its like confident level)')
+            image1.image(image_file, width=200, caption='Input')
+            image2.image(image_file, width=200, caption='Similar 1')
+            image3.image(image_file, width=200, caption='Similar 2')
+            image4.image(image_file, width=200, caption='Similar 3')
+        except Exception as e:
+            RESULT_AREA.error('Sorry, there was an issue while processing the request. Please refresh the page to reload the app.')
 
 
 if __name__ == '__main__':
