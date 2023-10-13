@@ -109,9 +109,14 @@ def inference(image_file):
             st.session_state.result_df['probability'] = label_probabilities  
             st.session_state.result_ood = is_odd
             st.session_state.input_image = image_file
-            st.session_state.similar_image_1 = IMAGE_PATH + LABEL[t].lower() + '/1.png'
-            st.session_state.similar_image_2 = IMAGE_PATH + LABEL[t].lower() + '/2.png'
-            st.session_state.similar_image_3 = IMAGE_PATH + LABEL[t].lower() + '/3.png'
+            if t == 2:
+                st.session_state.similar_image_1 = image_file
+                st.session_state.similar_image_2 = image_file
+                st.session_state.similar_image_3 = image_file
+            else:
+                st.session_state.similar_image_1 = IMAGE_PATH + LABEL[t].lower() + '/1.png'
+                st.session_state.similar_image_2 = IMAGE_PATH + LABEL[t].lower() + '/2.png'
+                st.session_state.similar_image_3 = IMAGE_PATH + LABEL[t].lower() + '/3.png'
 
         except Exception as e:
             reset()
