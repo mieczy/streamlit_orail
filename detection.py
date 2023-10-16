@@ -62,15 +62,18 @@ class OrailModel:
             
             p = label_probabilities[predicted_label]
             if p <= 75:
-                is_odd = 'Yes (Score1)'
+                is_odd = 'Yes (OOD Score1)'
+                description = '(OOD Score 1 indicates that the test image can be unknown image with a low confidence)'
             elif p <= 85:
-                is_odd = 'Yes (Score2)'
+                is_odd = 'Yes (OOD Score2)'
+                description = '(OOD Score 2 indicates that the test image can be unkown image with a high confidence)'
             else:
                 is_odd = 'No'
+                description = ''
             
-            return predicted_label, label_probabilities, is_odd
+            return predicted_label, label_probabilities, is_odd, description
         
-        except Exception  as e:
+        except Exception as e:
             logging.error(e)
             raise Exception()
         
