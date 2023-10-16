@@ -69,7 +69,7 @@ def main():
         st.empty()
         
     with st.container():
-        st.subheader('Simailar Images')
+        st.subheader('Similar Images')
         image1, image2, image3, image4 = st.columns(4)
         image1.image(st.session_state.input_image, caption='Input')
         image2.image(st.session_state.similar_image_1, caption='Similar 1')
