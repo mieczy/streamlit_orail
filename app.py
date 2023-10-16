@@ -13,6 +13,9 @@ st.set_page_config(
 
 IMAGE_PATH = 'images/'
 LABEL = ['NORMAL', 'AVG', 'MULTITREND', 'HUNTING', 'DRIFT']
+img_list1 = ['Normal','Hunting','Multitrend','Hunting','AVG']
+img_list2 = ['Normal','Avg','Multitrend','Normal','AVG']
+img_list3 = ['Normal','Normal','Multitrend','Hunting','AVG']
 
 res_df = pd.DataFrame(
                 {
@@ -63,18 +66,18 @@ def main():
             )
 
         with odd_col:
-            st.subheader('Is this OOD Image?')
+            st.subheader('Is this Unknown Image?')
             st.info(f'**{st.session_state.result_ood}**')
-            st.write('\* OOD score of 1-2 indicates a confidence level')
+            st.write(st.session_state.description)
         st.empty()
         
     with st.container():
-        st.subheader('Simailar Images')
+        st.subheader('Similar Images')
         image1, image2, image3, image4 = st.columns(4)
         image1.image(st.session_state.input_image, caption='Input')
-        image2.image(st.session_state.similar_image_1, caption='Similar 1')
-        image3.image(st.session_state.similar_image_2, caption='Similar 2')
-        image4.image(st.session_state.similar_image_3, caption='Similar 3')
+        image2.image(st.session_state.similar_image_1, caption=f'Similar 1({img_list1[st.session_state.result_idx]})')
+        image3.image(st.session_state.similar_image_2, caption=f'Similar 2({img_list2[st.session_state.result_idx]})')
+        image4.image(st.session_state.similar_image_3, caption=f'Similar 3({img_list3[st.session_state.result_idx]})')
 
 
 def init():
@@ -86,6 +89,12 @@ def init():
 
     if 'result_ood' not in st.session_state:
         st.session_state.result_ood = ' '
+
+    if 'result_idx' not in st.session_state:
+        st.session_state.result_idx = 0
+
+    if 'description' not in st.session_state:
+        st.session_state.description = ' '
     
     default_img = IMAGE_PATH + 'default.png'
     if 'input_image' not in st.session_state:
@@ -105,10 +114,12 @@ def inference(image_file):
     if image_file is not None:
         try: 
             model = get_model(st.session_state.model)
-            t, label_probabilities, is_odd = model.detect(image_file)
+            t, label_probabilities, is_odd, desc = model.detect(image_file)
+            st.session_state.result_idx = t
             st.session_state.result_df['probability'] = label_probabilities  
             st.session_state.result_ood = is_odd
             st.session_state.input_image = image_file
+            st.session_state.description = desc
             if t == 2:
                 st.session_state.similar_image_1 = image_file
                 st.session_state.similar_image_2 = image_file
