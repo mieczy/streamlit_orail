@@ -13,9 +13,9 @@ st.set_page_config(
 
 IMAGE_PATH = 'images/'
 LABEL = ['NORMAL', 'AVG', 'MULTITREND', 'HUNTING', 'DRIFT']
-img_list1 = ['Normal','Hunting','Multitrend','Hunting','AVG']
-img_list2 = ['Normal','Avg','Multitrend','Normal','AVG']
-img_list3 = ['Normal','Normal','Multitrend','Hunting','AVG']
+img_list1 = ['Normal','Hunting','Normal','Hunting','AVG']
+img_list2 = ['Normal','Avg','Normal','Normal','AVG']
+img_list3 = ['Normal','Normal','Normal','Hunting','AVG']
 
 res_df = pd.DataFrame(
                 {
@@ -120,14 +120,9 @@ def inference(image_file):
             st.session_state.result_ood = is_odd
             st.session_state.input_image = image_file
             st.session_state.description = desc
-            if t == 2:
-                st.session_state.similar_image_1 = image_file
-                st.session_state.similar_image_2 = image_file
-                st.session_state.similar_image_3 = image_file
-            else:
-                st.session_state.similar_image_1 = IMAGE_PATH + LABEL[t].lower() + '/1.png'
-                st.session_state.similar_image_2 = IMAGE_PATH + LABEL[t].lower() + '/2.png'
-                st.session_state.similar_image_3 = IMAGE_PATH + LABEL[t].lower() + '/3.png'
+            st.session_state.similar_image_1 = IMAGE_PATH + LABEL[t].lower() + '/1.png'
+            st.session_state.similar_image_2 = IMAGE_PATH + LABEL[t].lower() + '/2.png'
+            st.session_state.similar_image_3 = IMAGE_PATH + LABEL[t].lower() + '/3.png'
 
         except Exception as e:
             reset()
